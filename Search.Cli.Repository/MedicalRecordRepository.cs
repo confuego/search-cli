@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -47,6 +48,7 @@ namespace Search.Cli.Repository
 			var tableColumnCount = table.Columns.Count;
 			var dataRow = table.NewRow();
 			var items = new object[tableColumnCount];
+			var hasQuotes = false;
 
 			foreach (var character in row)
 			{
@@ -54,7 +56,12 @@ namespace Search.Cli.Repository
 				{
 					break;
 				}
-				if(character == ',')
+				if(character == '"')
+				{
+					hasQuotes = !hasQuotes;
+					continue;
+				}
+				if(character == ',' && !hasQuotes)
 				{
 					items[currentColumnCount] = buffer;
 					currentColumnCount++;
@@ -72,9 +79,15 @@ namespace Search.Cli.Repository
 		{
 			var buffer = string.Empty;
 			var duplicates = new Dictionary<string, int>();
+			var hasQuotes = false;
 			foreach (var character in columns)
 			{
-				if(character == ',')
+				if(character == '"')
+				{
+					hasQuotes = !hasQuotes;
+					continue;
+				}
+				if(character == ',' && !hasQuotes)
 				{
 					if(table.Columns.Contains(buffer) && !duplicates.ContainsKey(buffer))
 					{
@@ -86,7 +99,7 @@ namespace Search.Cli.Repository
 						duplicates[buffer]++;
 						buffer += $"{duplicates[buffer]}";
 					}
-					table.Columns.Add(new DataColumn(buffer));
+					table.Columns.Add(new DataColumn(buffer.ToLowerInvariant()));
 					buffer = "";
 					continue;
 				}

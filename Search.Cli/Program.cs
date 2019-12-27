@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Search.Cli.Services;
 
 namespace Search.Cli
 {
 	public class Program
 	{
-		public async static Task Main(string[] args)
+		public static async Task Main(string[] args)
 		{
-			var provider = new ServiceCollection()
-				.AddServices()
-				.BuildServiceProvider();
+			var argumentContext = SearchArgumentParser.Parse(args);
+			Console.WriteLine($"Arguments created ({argumentContext.Column}, {argumentContext.Operator}, {argumentContext.Text})");
+			Console.WriteLine();
 
-			var searchService = provider.GetRequiredService<ISearchService>();
+			var searchService = SearchFactory.Create(argumentContext.Operator);
 
-			var result = await searchService.SearchAsync("", "", Operator.Contains);
+			var result = await searchService.SearchAsync(argumentContext.Column, argumentContext.Text);
 
 			foreach (var id in result)
 			{
