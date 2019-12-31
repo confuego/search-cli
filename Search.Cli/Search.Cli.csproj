@@ -4,6 +4,6 @@
 	<TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-	<ProjectReference Include="../Search.Cli.Services/Search.Cli.Services.csproj"></ProjectReference>
+	<ProjectReference Include="../Search.Sdk/Search.Sdk.csproj"></ProjectReference>
   </ItemGroup>
 </Project>

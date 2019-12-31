@@ -1,47 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Search.Cli.Repository
+namespace Search.Sdk
 {
-	public class MedicalRecordRepository : IMedicalRecordRepository
+	public class Csv
 	{
-		public async Task<DataTable> ReadAsync(string filePath)
-		{
-			var result = new DataTable();
-			var rowCount = 0;
-			using(var fileStream = File.OpenRead(filePath))
-			{
-				using(var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress))
-				{
-					using(var reader = new StreamReader(gzipStream))
-					{
-						while(!reader.EndOfStream)
-						{
-							var row = await reader.ReadLineAsync();
-
-							if(rowCount == 0) 
-							{
-								AddColumns(result, row);
-							}
-							else 
-							{
-								AddRow(result, row);
-							}
-
-							rowCount++;
-						}
-					}
-				}
-			}
-
-			return result;
-		}
-
-		private void AddRow(DataTable table, string row)
+		private static void AddRow(DataTable table, string row)
 		{
 			var buffer = "";
 			var currentColumnCount = 0;
@@ -75,7 +45,7 @@ namespace Search.Cli.Repository
 			table.Rows.Add(dataRow);
 		}
 
-		private void AddColumns(DataTable table, string columns)
+		private static void AddColumns(DataTable table, string columns)
 		{
 			var buffer = string.Empty;
 			var duplicates = new Dictionary<string, int>();
@@ -106,6 +76,60 @@ namespace Search.Cli.Repository
 
 				buffer += character;
 			}
+		}
+
+
+		public static async Task<DataTable> ReadAsync(string filePath)
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
+			var result = new DataTable();
+			var rowCount = 0;
+			using(var fileStream = File.OpenRead(filePath))
+			{
+				using(var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress))
+				{
+					using(var reader = new StreamReader(gzipStream))
+					{
+						while(!reader.EndOfStream)
+						{
+							var row = await reader.ReadLineAsync();
+
+							if(rowCount == 0) 
+							{
+								AddColumns(result, row);
+							}
+							else 
+							{
+								AddRow(result, row);
+							}
+
+							rowCount++;
+						}
+					}
+				}
+			}
+
+			stopwatch.Stop();
+			Console.WriteLine($"Reading '{filePath}' took {stopwatch.ElapsedMilliseconds}ms");
+
+			return result;
+		}
+
+		public static async Task<DataSet> ReadAllAsync(params string[] paths)
+		{
+			var tasks = new List<Task<DataTable>>();
+
+			tasks.AddRange(paths.ToList().Select(x => ReadAsync(x)));
+
+			await Task.WhenAll(tasks);
+
+			var set = new DataSet();
+
+			tasks.ForEach(x => set.Tables.Add(x.Result));
+
+			return set;
 		}
 	}
 }

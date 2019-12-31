@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Search.Cli.Services
+namespace Search.Sdk
 {
     public class NGram
     {

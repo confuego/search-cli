@@ -1,6 +1,6 @@
 using System;
 
-namespace Search.Cli
+namespace Search.Sdk
 {
 	public class SearchArgumentException : Exception
 	{

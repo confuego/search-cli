@@ -1,4 +1,4 @@
-namespace Search.Cli.Services
+namespace Search.Sdk
 {
     public enum Operator
     {

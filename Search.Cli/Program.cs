@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Search.Cli.Services;
+using Search.Sdk;
 
 namespace Search.Cli
 {
 	public class Program
 	{
-		public static async Task Main(string[] args)
+		public static void Main(string[] args)
 		{
-			var argumentContext = SearchArgumentParser.Parse(args);
-			Console.WriteLine($"Arguments created ({argumentContext.Column}, {argumentContext.Operator}, {argumentContext.Text})");
-			Console.WriteLine();
+			var results = new SearchEngine()
+				.Index("./data/sample_data.csv.gz")
+				.Search(string.Concat(args));
 
-			var searchService = SearchFactory.Create(argumentContext.Operator);
-
-			var result = await searchService.SearchAsync(argumentContext.Column, argumentContext.Text);
-
-			foreach (var id in result)
+			foreach (var id in results)
 			{
 				Console.WriteLine(id);
 			}

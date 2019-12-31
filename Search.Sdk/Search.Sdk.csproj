@@ -3,7 +3,5 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-	<ProjectReference Include="../Search.Cli.Repository/Search.Cli.Repository.csproj"></ProjectReference>
-  </ItemGroup>
+
 </Project>
