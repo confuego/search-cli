@@ -104,7 +104,7 @@ namespace Search.Sdk
 
 			Console.WriteLine($"Searching for {context} took {stopwatch.ElapsedMilliseconds}ms");
 
-			return tasks.SelectMany(x => x.Result).Select(x => (string) x.ReadData<string>("Primary DI"));
+			return tasks.SelectMany(x => x.Result).Select(x => x.ReadData<string>("Primary DI").TrimStart('0'));
 		}
 	}
 }
