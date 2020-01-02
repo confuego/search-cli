@@ -18,7 +18,7 @@ search -i ./data/sample_data.csv.gz
 
 ## Commands
 
-###**Make sure column names DO NOT include (=, ^, @, >)**
+**Make sure column names DO NOT include (=, ^, @, >)**
 
 ```code
 > {text} | runs a general search for those keywords & sorts by relevance
