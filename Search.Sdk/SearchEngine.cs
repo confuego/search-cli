@@ -71,7 +71,7 @@ namespace Search.Sdk
 			return this;
 		}
 
-		public IEnumerable<string> Search(string query, string indexPattern = null)
+		public IEnumerable<IShard> Search(string query, string indexPattern = null)
 		{
 			var task = SearchAsync(query, indexPattern);
 			Task.WaitAll(task);
@@ -79,11 +79,9 @@ namespace Search.Sdk
 			return task.Result;
 		}
 
-		public async Task<IEnumerable<string>> SearchAsync(string query, string indexPattern = null)
+		public async Task<IEnumerable<IShard>> SearchAsync(string query, string indexPattern = null)
 		{
 			var context = SearchArgumentParser.Parse(query);
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
 
 			var indicesToSearch = _indices.ToDictionary(k => k.Key, v => v.Value);
 
@@ -102,9 +100,7 @@ namespace Search.Sdk
 
 			await Task.WhenAll(tasks);
 
-			Console.WriteLine($"Searching for {context} took {stopwatch.ElapsedMilliseconds}ms");
-
-			return tasks.SelectMany(x => x.Result).Select(x => x.ReadData<string>("Primary DI").TrimStart('0'));
+			return tasks.SelectMany(x => x.Result);
 		}
 	}
 }

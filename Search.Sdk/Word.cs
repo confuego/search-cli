@@ -47,6 +47,11 @@ namespace Search.Sdk
 					wordEnd = charIndex;
 				}
 			}
+
+			if(!string.IsNullOrWhiteSpace(buf))
+			{
+				wordSelector(buf, wordStart, wordEnd);
+			}
 		}
 
         public static List<string> ParseAll(string text)

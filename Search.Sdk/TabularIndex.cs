@@ -13,9 +13,6 @@ namespace Search.Sdk
 			var result = new Dictionary<string, List<IShard>>();
 			var currCol = string.Empty;
 			DataRow currRow;
-			var stopwatch = new Stopwatch();
-
-			stopwatch.Start();
 
 
 			for(var row = 0; row < table.Rows.Count; row++)
@@ -59,9 +56,6 @@ namespace Search.Sdk
 					});
 				}
 			}
-
-			stopwatch.Stop();
-			Console.WriteLine($"Indexed {result.Count} after {stopwatch.ElapsedMilliseconds}ms");
 
 			Shards = result;
 		}

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -81,9 +79,6 @@ namespace Search.Sdk
 
 		public static async Task<DataTable> ReadAsync(string filePath)
 		{
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-
 			var result = new DataTable();
 			var rowCount = 0;
 			using(var fileStream = File.OpenRead(filePath))
@@ -110,9 +105,6 @@ namespace Search.Sdk
 					}
 				}
 			}
-
-			stopwatch.Stop();
-			Console.WriteLine($"Reading '{filePath}' took {stopwatch.ElapsedMilliseconds}ms");
 
 			return result;
 		}

@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 
 namespace Search.Sdk
@@ -41,6 +40,32 @@ namespace Search.Sdk
 			}
 
 			return result && columnIndex == Column;
+		}
+
+		public int CompareTo(IShard other)
+		{
+			if(Equals(other))
+			{
+				return 0;
+			}
+
+			return 1;
+		}
+
+		public bool Equals(IShard other)
+		{
+			var otherShard = other as TabularShard;
+
+			if(otherShard == null)
+			{
+				return false;
+			}
+
+			return otherShard.Row == Row
+				&& otherShard.Column == Column
+				&& otherShard.WordStart == WordStart
+				&& otherShard.WordEnd == WordEnd
+				&& otherShard.Source == Source;
 		}
 	}
 }
