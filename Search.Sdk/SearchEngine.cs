@@ -81,7 +81,7 @@ namespace Search.Sdk
 
 		public async Task<IEnumerable<IShard>> SearchAsync(string query, string indexPattern = null)
 		{
-			var context = SearchArgumentParser.Parse(query);
+			var context = SearchArgument.Parse(query);
 
 			var indicesToSearch = _indices.ToDictionary(k => k.Key, v => v.Value);
 

@@ -27,3 +27,21 @@ search -i ./data/sample_data.csv.gz
 > {column} ^= {text} | search for column that starts with text & sort by relevance
 ```
 
+## Examples
+
+```code
+cmd> search -i ./data/sample_data.csv.gz
+search> needles
+search> {search-results-here}
+search> FDA Product Code Description = HEATING
+search> {search-results-here}
+search> FDA Product Code Description @> HEATING
+search> {search-results-here}
+search> FDA Product Code Description ^= HEA
+search> {search-results-here}
+search> FDA Product Code Description @> a quick brown fox
+search> {search-results-here}
+PRESS ESC
+cmd>
+```
+

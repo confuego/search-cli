@@ -13,10 +13,11 @@ namespace Search.Sdk
 			var result = new List<IShard>();
 
 			Word.ForEach(context.Text, word => {
-				if(Shards.ContainsKey(word))
+				var lower = word.ToLowerInvariant();
+				if(Shards.ContainsKey(lower))
 				{
 					context.Text = word;
-					result.AddRange(Shards[word].Where(x => x.IsMatch(context)));
+					result.AddRange(Shards[lower].Where(x => x.IsMatch(context)));
 				}
 			});
 			context.Text = orig;

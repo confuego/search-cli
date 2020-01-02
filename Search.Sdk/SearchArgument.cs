@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 
 namespace Search.Sdk
 {
-	public static class SearchArgumentParser
+	public static class SearchArgument
 	{
 
 		private static Dictionary<string, Operator> _operators = new Dictionary<string, Operator>
