@@ -21,7 +21,7 @@ namespace Search.Sdk
 				}
 			});
 			context.Text = orig;
-			return result;//.OrderByDescending(x => x);
+			return result.OrderByDescending(x => x);
 		}
     }
 }

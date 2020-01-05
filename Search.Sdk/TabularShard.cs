@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 
 namespace Search.Sdk
@@ -44,28 +45,48 @@ namespace Search.Sdk
 
 		public int CompareTo(IShard other)
 		{
-			if(Equals(other))
+			var tabularShard = other as TabularShard;
+
+			var matchingCell = tabularShard.Row == Row
+				&& tabularShard.Column == Column
+				&& tabularShard.Source == Source;
+
+			if(matchingCell 
+				&& tabularShard.WordStart == WordStart 
+				&& tabularShard.WordEnd == WordEnd)
 			{
 				return 0;
 			}
+			else if(matchingCell
+				&& tabularShard.WordStart > WordStart)
+			{
+				return 1;
+			}
+			else if(matchingCell
+				&& WordStart > tabularShard.WordStart)
+			{
+				return -1;
+			}
+			else if(WordStart > tabularShard.WordStart)
+			{
+				return -1;
+			}
+			else if(tabularShard.WordStart > WordStart)
+			{
+				return 1;
+			}
 
-			return 1;
+			return 0;
 		}
 
 		public bool Equals(IShard other)
 		{
-			var otherShard = other as TabularShard;
+			return CompareTo(other) == 0;
+		}
 
-			if(otherShard == null)
-			{
-				return false;
-			}
-
-			return otherShard.Row == Row
-				&& otherShard.Column == Column
-				&& otherShard.WordStart == WordStart
-				&& otherShard.WordEnd == WordEnd
-				&& otherShard.Source == Source;
+		public override string ToString()
+		{
+			return $"(Row: {Row}, Column: {Column}, Start: {WordStart}, End: {WordEnd}, Data: {Source.Rows[Row][Column].ToString().Substring(WordStart, WordEnd - WordStart + 1)})";
 		}
 	}
 }

@@ -64,10 +64,12 @@ namespace Search.Cli
 						Console.Clear();
 						Console.WriteLine($"> {commandBuf}");
 						var results = engine.Search(commandBuf.Trim());
+						var ids = new List<string>();
+						ids.AddRange(results.Select(x => x.ReadData<string>("Primary DI").TrimStart('0')).Distinct());
 
-						foreach(var result in results)
+						foreach (var id in ids)
 						{
-							Console.WriteLine(result.ReadData<string>("Primary DI").TrimStart('0'));
+							Console.WriteLine(id);
 						}
 
 						commandBuf = string.Empty;
