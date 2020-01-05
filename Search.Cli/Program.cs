@@ -26,7 +26,9 @@ namespace Search.Cli
 			var commandBuf = string.Empty;
 			var charsToIgnore = new HashSet<ConsoleKey>
 			{
-				ConsoleKey.Backspace
+				ConsoleKey.Backspace,
+				ConsoleKey.LeftArrow,
+				ConsoleKey.RightArrow
 			};
 			Console.Write("> ");
 			do {
@@ -39,6 +41,18 @@ namespace Search.Cli
 
 				switch(current.Key)
 				{
+					case ConsoleKey.LeftArrow:
+						if(Console.CursorLeft > 2)
+						{
+							Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+						}
+						break;
+					case ConsoleKey.RightArrow:
+						if(commandBuf.Length > Console.CursorLeft - 2)
+						{
+							Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+						}
+						break;
 					case ConsoleKey.Backspace:
 						if(commandBuf.Length > 0)
 						{
