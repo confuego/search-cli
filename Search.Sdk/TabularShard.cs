@@ -33,7 +33,7 @@ namespace Search.Sdk
 			switch(context.Operator)
 			{
 				case Operator.Equals:
-					result = context.Text.Length == WordEnd - WordStart + 1;
+					result = context.Text.Length == WordEnd - WordStart + 1 && WordStart == 0;
 					break;
 				case Operator.StartsWith:
 					result = WordStart == 0;

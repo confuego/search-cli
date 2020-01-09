@@ -16,7 +16,7 @@ namespace Search.Sdk
 				var lower = word.ToLowerInvariant();
 				if(Shards.ContainsKey(lower))
 				{
-					context.Text = word;
+					context.Text = lower;
 					result.AddRange(Shards[lower].Where(x => x.IsMatch(context)));
 				}
 			});

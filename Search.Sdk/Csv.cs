@@ -18,7 +18,7 @@ namespace Search.Sdk
 			var items = new object[tableColumnCount];
 			var hasQuotes = false;
 
-			foreach (var character in row)
+			foreach (var character in row.Trim())
 			{
 				if(currentColumnCount >= tableColumnCount)
 				{
